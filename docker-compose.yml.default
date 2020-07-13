@@ -37,7 +37,7 @@ services:
       MYSQL_DATABASE: 'pmes_data_center'
 
   data_center_go:
-    image: pmes_data_center_go
+    image: golang
     depends_on:
       - db
     ports:
@@ -46,10 +46,12 @@ services:
       - pmes
     environment:
       DB_DNS: 'root:123456@tcp(db:3306)/pmes?charset=utf8mb4&parseTime=True&loc=Local'
-      ENV: 'production'
+      ENV: 'prod'
+    entrypoint: /code/entrypoint.sh
     volumes:
       - "/path/to/your/gopath:/go"
       - "/path/to/your/file_cache_path:/file_cache_path"
+      - "/path/to/your/entrypoint.sh:/entrypoint.sh"
 
   gateway:
     image: nginx
