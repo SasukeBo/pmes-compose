@@ -1,0 +1,63 @@
+upstream data_center_backend {
+    server data_center_go:44761;
+    # server host.docker.internal:44761;
+}
+
+upstream data_center_frontend {
+    server data_center_vue:44761;
+    # server host.docker.internal:44761;
+}
+
+upstream data_producer {
+    server device:44762;
+    # server host.docker.internal:44762;
+}
+
+server {
+    listen       80;
+    server_name  localhost;
+
+    charset koi8-r;
+    access_log  /var/log/nginx/pmes.access.log  main;
+
+    location ~ /(api|auth|playground|downloads) {
+        proxy_pass http://data_center_backend;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_read_timeout 300s;
+    }
+
+    location ~ /produce {
+        proxy_pass http://data_producer;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_read_timeout 300s;
+    }
+
+    location ~/posts {
+        client_max_body_size 256M; # set file upload limit size
+        proxy_pass http://data_center_backend;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_read_timeout 300s;
+    }
+
+    location ~ / {
+        proxy_pass http://data_center_frontend;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_read_timeout 300s;
+    }
+
+    # location ~ / {
+    #     root /dist/index.html;
+    # }
+}
