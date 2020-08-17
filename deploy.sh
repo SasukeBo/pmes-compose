@@ -14,7 +14,7 @@ case $1 in
   git pull origin version2
   yarn build
   cd $compose_path
-  docker-compose restart data_center_vue
+  docker-compose restart front
   ;;
 "back")
   cd $GOPATH/src/github.com/SasukeBo/pmes-data-center
