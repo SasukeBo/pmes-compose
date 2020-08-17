@@ -1,13 +1,15 @@
 version: '3.3'
 services:
-  data_center_vue:
-    image: pmes_data_center_vue
+  front:
+    image: vuejs/ci
     networks:
       - pmes
     environment:
       PORT: '44761'
+    entrypoint: /entrypoint.sh
     volumes:
-      - "/path/to/your/frontend/dist:/server"
+      - "/path/to/your/frontend/dist:/project"
+      - '/path/to/your/frontend/entrypoint.sh:/entrypoint.sh'
 
   ftp:
     image: fauria/vsftpd
