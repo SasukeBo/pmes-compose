@@ -10,7 +10,6 @@ case $1 in
   dc restart device
   ;;
 "front")
-  p front
   cd /home/sasukebo/pmes-data-center-vue
   git pull origin version2
   yarn build
