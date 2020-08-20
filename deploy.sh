@@ -8,7 +8,6 @@ case $1 in
   git pull origin version2
   cd $compose_path
   docker-compose restart device
-  docker logs -f --since 30s pmescompose_center_1
   ;;
 "front")
   cd /home/sasukebo/pmes-data-center-vue
