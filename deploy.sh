@@ -22,6 +22,19 @@ case $1 in
   cd $compose_path
   docker-compose restart center
   ;;
+"dmb")
+  cd $GOPATH/src/github.com/SasukeBo/pmes-device-monitor
+  git pull origin master
+  cd $compose_path
+  docker-compose restart device_monitor_go
+  ;;
+"dmf")
+  cd /home/sasukebo/pmes-device-monitor-vue
+  git pull origin master
+  yarn build
+  cd $compose_path
+  docker-compose restart device_monitor_vue
+  ;;
 *)
   echo "Illegal option $1, only support device, front, back"
   ;;
