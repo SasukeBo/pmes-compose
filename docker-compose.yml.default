@@ -1,6 +1,17 @@
 version: '3.3'
 services:
-  front:
+  data_center_vue:
+    image: vuejs/ci
+    networks:
+      - pmes
+    environment:
+      PORT: '44761'
+    entrypoint: /entrypoint.sh
+    volumes:
+      - "/path/to/your/frontend/dist:/project"
+      - '/path/to/your/frontend/entrypoint.sh:/entrypoint.sh'
+
+  device_monitor_vue:
     image: vuejs/ci
     networks:
       - pmes
@@ -66,6 +77,19 @@ services:
     volumes:
       - "/path/to/your/gopath:/go"
       - "/path/to/your/file_cache_path:/file_cache_path"
+      - "/path/to/your/entrypoint.sh:/entrypoint.sh"
+
+  device_monitor_go:
+    image: golang
+    depends_on:
+      - db
+    ports:
+      - '44766:44761'
+    networks:
+      - pmes
+    entrypoint: /entrypoint.sh
+    volumes:
+      - "/path/to/your/gopath:/go"
       - "/path/to/your/entrypoint.sh:/entrypoint.sh"
 
   gateway:
