@@ -20,7 +20,7 @@ case $1 in
   cd $GOPATH/src/github.com/SasukeBo/pmes-data-center
   git pull origin version2
   cd $compose_path
-  docker-compose restart data_center_go
+  docker-compose restart center
   ;;
 *)
   echo "Illegal option $1, only support device, front, back"
